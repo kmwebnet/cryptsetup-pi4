@@ -1,0 +1,4 @@
+export KEYMAP=y
+export BUSYBOX=y
+export FRAMEBUFFER=y
+export CRYPTSETUP=y
