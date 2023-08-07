@@ -10,8 +10,8 @@
 # /etc/initramfs-tools/hooks/ is required by update-initramfs.  The hook script
 # copies the keyfile into the intramfs {DESTDIR}.
 
-/etc/cryptroot/keyout | cryptsetup luksAddKey /dev/mmcblk0p1 -S 1 --key-file=/etc/cryptroot/preset.key /dev/stdin > /dev/null 2>&1
+/etc/cryptroot/keyout | cryptsetup luksAddKey -S 1 --key-file=/etc/cryptroot/preset.key /dev/mmcblk0p2 - > /dev/null 2>&1
 
-/etc/cryptroot/keyout | cryptsetup luksKillSlot /dev/mmcblk0p1 0 --key-file=- > /dev/null 2>&1
+/etc/cryptroot/keyout | cryptsetup luksKillSlot --key-file=- /dev/mmcblk0p2 0 > /dev/null 2>&1
 
 /etc/cryptroot/keyout
