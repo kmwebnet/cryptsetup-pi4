@@ -20,9 +20,6 @@ sudo cp hooks/loadinitramfskey.sh /etc/initramfs-tools/hooks/
 sudo cp cryptroot/* /etc/cryptroot/
 sudo cp conf/cryptsetup /etc/initramfs-tools/conf.d/
 
-sudo update-initramfs -c -k `uname -r`
-current_release=$(uname -r)
-
 #find necessary modules and add to /etc/initramfs-tools/modules
 FILE="/etc/initramfs-tools/modules"
 SEARCH_FOR="dm-crypt"
@@ -37,6 +34,9 @@ SEARCH_FOR="i2c-dev"
 if ! grep -q $SEARCH_FOR "$FILE"; then
     sudo sh -c "echo 'i2c-dev' >> /etc/initramfs-tools/modules"
 fi
+
+sudo update-initramfs -c -k `uname -r`
+current_release=$(uname -r)
 
 #find initramfs strings in /boot/config.txt and replace with new version
 FILE="/boot/config.txt"
@@ -69,4 +69,4 @@ if [ ! -f "$FILE" ]; then
     sudo cp /boot/cmdline.txt /boot/cmdline.txt.old
 fi
 
-sudo echo "cryptdevice=/dev/mmcblk0p2:luks cryptopts=keyscript=/lib/cryptsetup/scripts/getinitramfskey.sh,source=/dev/mmcblk0p2,target=luks,cipher=aes-xts-plain64,size=512,hash=sha256 root=/dev/mapper/luks rootfstype=ext4 elevator=deadline fsck.repair=yes rootwait quiet splash plymouth.ignore-serial-consoles" > /boot/cmdline.txt
+sudo echo "cryptdevice=/dev/mmcblk0p2:luks cryptopts=keyscript=/lib/cryptsetup/scripts/getinitramfskey.sh,source=/dev/mmcblk0p2,target=luks,cipher=aes-xts-plain64,size=512,hash=sha256 root=/dev/mapper/luks rootfstype=ext4 fsck.repair=yes rootwait quiet splash plymouth.ignore-serial-consoles" > /boot/cmdline.txt
